@@ -1,6 +1,6 @@
 <?php
 //incluye la clase Libro y CrudLibro
-	require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolar/config/url.php"; 
+	require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php"; 
 
 ?>
 
@@ -15,7 +15,7 @@
 </header>
 
 
-<form action='<?=BASE_URL?>/controller/admin_materia.php' method='post'>
+<form action='<?=BASE_URL?>/src/controller/admin_materia.php' method='post'>
 	<table>
 		<tr>
 			<td class="cambiocolor">Clave materia:</td>

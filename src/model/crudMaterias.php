@@ -1,7 +1,7 @@
 <?php
 // incluye la clase Db
-require_once(BASE_PATH . '/config/conexion.php');
-require_once(BASE_PATH . '/model/Materias.php');
+require_once(BASE_PATH . '/src/config/conexion.php');
+require_once(BASE_PATH . '/src/model/Materias.php');
 
 
 class CrudMaterias
@@ -71,9 +71,8 @@ class CrudMaterias
 		$db = Db::conectar();
 		
 		$listaMaterias = [];
-		$select = $db->query('SELECT * FROM Materias'); //inner join para ver las existencia y Materiass
+		$select = $db->query('SELECT * FROM Materias ORDER BY CAST(claveMateria AS UNSIGNED) ASC'); //inner join para ver las existencia y Materiass
 		foreach ($select->fetchAll() as $materia) {
-			
 
 			$myMateria = new Materias();
 			$myMateria->setClaveMateria($materia['claveMateria']);
@@ -81,10 +80,15 @@ class CrudMaterias
 			$myMateria->setSemestre($materia['semestre']);
 			$myMateria->setHoras($materia['horas']);
 			$myMateria->setCreditos($materia['creditos']);
+			$claveMateria = $materia['claveMateria'];
+			$unidades = $this->obtenerUnidadesporClave($claveMateria);
+			$numUnidades = count($unidades);
+			$myMateria->setUnidades($numUnidades);
 			//$myMateria->setUnidades($numUnidades);
 			//$myMateria->setExistencia($materia['existencia']);
 			$listaMaterias[] = $myMateria;
 		}
+		
 		return $listaMaterias;
 
 
@@ -105,7 +109,7 @@ class CrudMaterias
 		$selectUnidades = $db->prepare('SELECT * FROM Unidades WHERE MateriasClaveMateria=:claveMateria');
 		$selectUnidades->bindValue('claveMateria', $claveMateria);
 		$selectUnidades->execute();
-		return $selectUnidades->fetch();
+		return $selectUnidades->fetchAll();
 
 	}
 	// Search
@@ -173,7 +177,7 @@ class CrudMaterias
 	public function eliminarUnidades($claveMateria){
 		$db = Db::conectar();
 		$eliminar = $db->prepare('DELETE FROM Unidades WHERE MateriasClaveMateria=:claveMateria');
-		$eliminar->bindValue(':claveMateria', $claveMateria);
+		$eliminar->bindValue('claveMateria', $claveMateria);
 		$eliminar->execute();
 	}
 }

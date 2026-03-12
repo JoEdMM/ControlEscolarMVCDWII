@@ -1,8 +1,8 @@
 <?php
 //incluye la clase Libro y CrudLibro
-require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolar/config/url.php";
-require_once BASE_PATH . "/model/crudMaterias.php";
-require_once BASE_PATH . "/model/Materias.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
+require_once BASE_PATH . "/src/model/crudMaterias.php";
+require_once BASE_PATH . "/src/model/Materias.php";
 
 $crud = new crudMaterias();
 $materia = new Materias();

@@ -1,8 +1,8 @@
 <?php
 //incluye la clase Libro y CrudLibro
-	require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolar/config/url.php"; 
-	require_once(BASE_PATH .'/model/CrudMaterias.php');
-	require_once(BASE_PATH .'/model/Materias.php');
+	require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php"; 
+	require_once(BASE_PATH .'/src/model/CrudMaterias.php');
+	require_once(BASE_PATH .'/src/model/Materias.php');
 	$crud= new CrudMaterias();
 	$materia= new Materias();
 	//busca el libro utilizando el id, que es enviado por GET desde la vista mostrar.php
@@ -55,7 +55,7 @@
 <div>
 	<h2 align="center">¿Estás seguro de borrar esta materia?</h2>
 
-	<form action="<?=BASE_URL?>/controller/admin_materia.php" method="get" align="center">
+	<form action="<?=BASE_URL?>/src/controller/admin_materia.php" method="get" align="center">
 		<input type="hidden" name="claveMateria" value="<?php echo $materia->getClaveMateria(); ?>">
 		<input type="hidden" name="accion" value="e">
 		<button type="submit">Sí</button>

@@ -16,7 +16,7 @@
 				<a class="fs-4 fw-bold" href="ingresar.php">Maestros</a>
 			</div>
 			<div class="col-12 col-md-2 bg-primary py-3 rounded-pill ">
-				<a class="fs-4 fw-bold" href="view/mostrar.php">Materias</a>
+				<a class="fs-4 fw-bold" href="/src/view/mostrar.php">Materias</a>
 			</div>
 			<div class="col-12 col-md-2 bg-primary py-3 rounded-pill ">
 				<a class="fs-4 fw-bold" href="ingresar.php">Alumnos</a>

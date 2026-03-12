@@ -1,7 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolar/config/url.php"; 
-require_once BASE_PATH ."/model/crudMaterias.php";
-require_once BASE_PATH . "/model/Materias.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php"; 
+require_once BASE_PATH ."/src/model/crudMaterias.php";
+require_once BASE_PATH . "/src/model/Materias.php";
 	$crud= new crudMaterias();
 	$materia= new Materias();
 	//busca el libro utilizando el id, que es enviado por GET desde la vista mostrar.php
