@@ -2,8 +2,8 @@
 
 <head>
 	<title>Ejemplo de libros</title>
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="assets/libs/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="assets/css/style.css"/>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
 				<a class="fs-4 fw-bold" href="ingresar.php">Maestros</a>
 			</div>
 			<div class="col-12 col-md-2 bg-primary py-3 rounded-pill ">
-				<a class="fs-4 fw-bold" href="src/view/mostrar.php">Materias</a>
+				<a class="fs-4 fw-bold" href="view/materias/mostrar.php">Materias</a>
 			</div>
 			<div class="col-12 col-md-2 bg-primary py-3 rounded-pill ">
 				<a class="fs-4 fw-bold" href="ingresar.php">Alumnos</a>
@@ -25,7 +25,7 @@
 	</div>
 	<footer class="fixed-bottom bg-dark text-white text-center p-4">
 		Omae Wa Mou Shindeiru
-	</footer>
+	</footer>  
 </body>
 
 </html>

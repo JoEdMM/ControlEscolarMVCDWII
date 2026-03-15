@@ -1,0 +1,70 @@
+h1{
+		background-color: #F3823C;
+		color: white;
+		font: bold 20px Arial;
+		padding: 5px 10px;
+		width: 400px;
+		float: center;
+		margin: 20px auto;
+		border-radius: 10px;
+	}
+
+	table{
+		border-collapse: collapse;
+		border: 1px solid white;
+	}
+
+	/*CAMBIO DE COLOR ENTRE TABLAS*/
+	table tr:nth-child(odd) {
+        background-color: #E9EBF5; 
+    }
+
+    table tr:nth-child(even) {
+        background-color: #CFD4EA; 
+    }
+
+
+	a{
+		text-decoration: none;
+        color: white;
+		font: 1em Arial;
+
+	}
+
+	td:hover{
+		background-color: #C5C5C5;
+        color: white;
+	}
+
+	.cambiocolor {
+		background-color: #4471C4;
+		color: white;
+		font: 15px Arial;
+		padding: 5px 15px;
+	}
+
+	button{
+		background-color: #4471C4;
+        color: white;
+        padding: 5px 20px;
+		border: 1px solid white;
+		border-radius: 10px;
+		
+	}
+
+	button:hover{
+		background-color: #C5C5C5;
+        color: white;
+	}
+
+	
+	.botonesActionleft{
+		float: left;
+		padding-left: 15em;
+	}
+
+	.botonesActionright{
+		float: right;
+		padding-right: 15em;
+
+	}

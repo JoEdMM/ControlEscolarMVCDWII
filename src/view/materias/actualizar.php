@@ -83,7 +83,7 @@ require_once BASE_PATH . "/src/model/Materias.php";
 </style>
 <body>
 	<h2 align = "center">Modificación Artículos</h2>
-	<form action='<?=BASE_URL?>/controller/admin_materia.php' method='post'>
+	<form action='<?=BASE_URL?>/src/controller/admin_materia.php' method='post'>
 	<table>
 		<tr>
 			<input type='hidden' name='claveMateria' value='<?php echo $materia->getClaveMateria()?>'>
@@ -106,10 +106,10 @@ require_once BASE_PATH . "/src/model/Materias.php";
 			<td class="cambiocolor">Creditos:</td>
 			<td><input type='text' name='creditos' size="1" value='<?php echo $materia->getCreditos()?>'></td>
 		</tr>
-		<tr>
+		<!-- <tr>
 			<td class="cambiocolor">Uniades:</td>
 			<td><input type='text' name='unidades' size="1" value='<?= $materia->getUnidades()?>'></td>
-		</tr>
+		</tr> -->
 		<tr>
 		<input type='hidden' name='actualizar' value='actualizar'>
 	</table><br><br>

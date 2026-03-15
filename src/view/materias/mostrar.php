@@ -20,9 +20,6 @@ $listaMaterias = $crud->mostrar();
 
 
 <body>
-	<a href="../index.php">
-		<button type="button">Regresar</button>
-	</a>
 
 	<header>
 		<h1 align="center" class="p-2 h2 fw-bold">Catálogo de Materias</h1>
