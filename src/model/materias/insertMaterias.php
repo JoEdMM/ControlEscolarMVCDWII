@@ -1,12 +1,18 @@
 <?php
-
+require_once(BASE_PATH . '/src/config/conexion.php');
+require_once(BASE_PATH . '/src/model/Materias.php');
 class insertMaterias{
+
+	public $conexion;
+    public function __construct()
+	{
+		$this->conexion = Db::conectar();
+	}
+
     public function insertarMaterias($materia)
 	{
-		$db = Db::conectar();
-
 		// Verifica si ya existe el artículo
-		$revisar = $db->prepare('SELECT claveMateria FROM Materias WHERE claveMateria = :claveMateria');
+		$revisar = $this->conexion->prepare('SELECT claveMateria FROM Materias WHERE claveMateria = :claveMateria');
 		$revisar->bindValue('claveMateria', $materia->getClaveMateria());
 		$revisar->execute();
 
@@ -18,7 +24,7 @@ class insertMaterias{
 			exit(); // Siempre recomendable después de redirigir
 		} else {
 			// Insertar el nuevo artículo
-			$insert = $db->prepare('INSERT INTO Materias (claveMateria, nombre, semestre, horas, creditos) VALUES (:claveMateria, :nombre, :semestre, :horas, :creditos)');
+			$insert = $this->conexion->prepare('INSERT INTO Materias (claveMateria, nombre, semestre, horas, creditos) VALUES (:claveMateria, :nombre, :semestre, :horas, :creditos)');
 
 			$insert->bindValue('claveMateria', $materia->getClaveMateria());
 			$insert->bindValue('nombre', $materia->getNombre());

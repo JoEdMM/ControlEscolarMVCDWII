@@ -1,12 +1,12 @@
 <?php
 //incluye la clase Libro y CrudLibro
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php"; 
-require_once BASE_PATH ."/src/model/crudMaterias.php";
+require_once BASE_PATH ."/src/model/materias/listaMaterias.php";
 require_once BASE_PATH . "/src/model/Materias.php";
-$crud=new crudMaterias();
+$listaMaterias=new listaMaterias();
 $materia= new Materias();
 //obtiene todos los libros con el método mostrar de la clase crud
-$listaMaterias=$crud->mostrar();
+$arrayMaterias=$listaMaterias->listaMaterias();
 
 ?>
 
@@ -74,7 +74,7 @@ $listaMaterias=$crud->mostrar();
 			<td align="center" class="cambiocolor">Unidades</td>
 		</head>
 		<body>
-			<?php foreach ($listaMaterias as $materia) {?>
+			<?php foreach ($arrayMaterias as $materia) {?>
 			<tr>
 				<td align="center"><?= $materia->getClaveMateria() ?></td>
 				<td align="center"><?= $materia->getNombre() ?></td>

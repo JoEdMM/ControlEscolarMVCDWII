@@ -1,14 +1,15 @@
 <?php
-//incluye la clase Libro y CrudLibro
-	require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php"; 
-	require_once(BASE_PATH .'/src/model/CrudMaterias.php');
-	require_once(BASE_PATH .'/src/model/Materias.php');
-	$crud= new CrudMaterias();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php"; 
+require_once BASE_PATH ."/src/model/materias/obtenerMaterias.php";
+require_once BASE_PATH . "/src/model/Materias.php";
+	$obtenerMaterias= new obtenerMaterias();
 	$materia= new Materias();
 	//busca el libro utilizando el id, que es enviado por GET desde la vista mostrar.php
-	$materia=$crud->obtenerMateria($_GET['claveMateria']);
-?>
+	$materia=$obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 
+// $unidades=$crud->obtenerUnidades($_GET['claveMateria']);
+// $unid = count($unidades);
+?>
 <html>
 <head>
 	<title>Confirmar eliminación</title>
