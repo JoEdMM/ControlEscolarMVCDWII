@@ -20,27 +20,28 @@ class listaMaterias
 	// Read
 	public function listaMaterias()
 	{
-		
 		$listaMaterias = [];
 		$select = $this->conexion->query('SELECT * FROM Materias ORDER BY CAST(claveMateria AS UNSIGNED) ASC'); //inner join para ver las existencia y Materiass
-		foreach ($select->fetchAll() as $materia) {
+		foreach ($select->fetchAll(PDO::FETCH_ASSOC) as $materia) {
 
-			$myMateria = new Materias();
-			$myMateria->setClaveMateria($materia['claveMateria']);
-			$myMateria->setNombre($materia['nombre']);
-			$myMateria->setSemestre($materia['semestre']);
-			$myMateria->setHoras($materia['horas']);
-			$myMateria->setCreditos($materia['creditos']);
-			$claveMateria = $materia['claveMateria'];
-			$unidades = $this->unidadxID->obtenerUnidadesporClave($claveMateria);
-			$numUnidades = count($unidades);
-			$myMateria->setUnidades($numUnidades);
-			//$myMateria->setUnidades($numUnidades);
-			//$myMateria->setExistencia($materia['existencia']);
-			$listaMaterias[] = $myMateria;
+			// $myMateria = new Materias();
+			// $myMateria->setClaveMateria($materia['claveMateria']);
+			// $myMateria->setNombre($materia['nombre']);
+			// $myMateria->setSemestre($materia['semestre']);
+			// $myMateria->setHoras($materia['horas']);
+			// $myMateria->setCreditos($materia['creditos']);
+			// $claveMateria = $materia['claveMateria'];
+			// $unidades = $this->unidadxID->obtenerUnidadesporClave($claveMateria);
+			// $numUnidades = count($unidades);
+			// $myMateria->setUnidades($numUnidades);
+			// //$myMateria->setUnidades($numUnidades);
+			// //$myMateria->setExistencia($materia['existencia']);
+			$listaMaterias[] = $materia;
 		}
+
+		$JsonListaMaterias = json_encode($listaMaterias);
 		
-		return $listaMaterias;
+		return $JsonListaMaterias;
 
 
 	}

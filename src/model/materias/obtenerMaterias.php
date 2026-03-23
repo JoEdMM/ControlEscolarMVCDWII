@@ -24,27 +24,19 @@ class obtenerMaterias{
 		$select->bindValue('claveMateria', $claveMateria);
 		$select->execute();
 
-		$materia = $select->fetch();
+		$materia = $select->fetch(PDO::FETCH_ASSOC);
 
+			$JsonListaMateria = json_encode($materia);
+			return $JsonListaMateria;
 
-		//valida que exista materia igual y manda a la pagina de error
-		if (!$materia && $numUnidades == 0) {
-			header('Location: error.php');
-		} else {
+			// $myMateria = new Materias();
+			// $myMateria->setClaveMateria($materia['claveMateria']);
+			// $myMateria->setNombre($materia['nombre']);
+			// $myMateria->setSemestre($materia['semestre']);
+			// $myMateria->setHoras($materia['horas']);
+			// $myMateria->setCreditos($materia['creditos']);
+			// $myMateria->setUnidades($numUnidades);
+			// return $myMateria;
 
-			$myMateria = new Materias();
-			$myMateria->setClaveMateria($materia['claveMateria']);
-			$myMateria->setNombre($materia['nombre']);
-			$myMateria->setSemestre($materia['semestre']);
-			$myMateria->setHoras($materia['horas']);
-			$myMateria->setCreditos($materia['creditos']);
-			$myMateria->setUnidades($numUnidades);
-			return $myMateria;
-
-		}
-
-		$selectUnidades = $db->prepare('SELECT * FROM Unidades WHERE MateriasClaveMateria=:claveMateria');
-		$selectUnidades->bindValue('claveMateria', $claveMateria);
-		$selectUnidades->execute();
 	}
 }
