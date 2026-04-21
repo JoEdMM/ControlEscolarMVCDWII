@@ -10,6 +10,7 @@ require_once(BASE_PATH . '/src/model/unidades/eliminarUnidad.php');
 require_once(BASE_PATH . '/src/model/unidades/insertUnidades.php');
 require_once(BASE_PATH . '/src/model/materias/obtenerMaterias.php');
 require_once(BASE_PATH . '/src/model/Materias.php');
+require_once(BASE_PATH . '/src/model/materias/listaMaterias_XML.php');
 
 $insertMateria = new insertMaterias();
 $actualizarMateria = new actualizarMateria();
@@ -19,30 +20,55 @@ $insertUnidad = new insertUnidades();
 $crud = new listaMaterias();
 $obtenerMaterias = new obtenerMaterias();
 $materia = new Materias();
+$curd_xml = new listaMaterias_XML();
+
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+$tipoDato = $_SERVER['HTTP_ACCEPT'];
 
-switch ($method){
+
+
+switch ($method) {
 	case 'GET':
+		switch ($tipoDato) {
+			case ("application/json"):
+				header("Content-Type: application/json; charset=UTF-8");
+				if (isset($_GET['claveMateria'])) {
+					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
+					var_dump($materia);
+				} else {
+					header("Content-Type: application/json; charset=UTF-8");
 
-		if(isset($_GET['claveMateria'])){
-			$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
-			var_dump($materia);
+					echo $crud->listaMaterias();
+				}
+				break;
+			case ("application/xml"):
+				header("Content-Type: application/xml; charset=UTF-8");
+				$listaMaterias = $curd_xml->mostrarXML();
+				break;
+			case ("application/csv"):
+
+				break;
+
 		}
-		else{
-			echo $crud->listaMaterias();
-		}
+
+		break;
 
 	case 'POST':
-		$dato = json_decode(file_get_contents('php://input'));
-		$listaMaterias = $insertMateria->insertarMaterias($dato);
+		$dato = json_decode(file_get_contents('php://input'), true);
+		$insertMateria->insertarMaterias($dato);
+		break;
+
+
+	case 'PUT':
+		$dato = json_decode(file_get_contents("php://input"), true);
+		$actualizarMateria->actualizarMateria($dato);
 		break;
 
 	case 'DELETE':
-		break;
-	
-	case 'UPDATE':
+		$dato = json_decode(file_get_contents('php://input'), true);
+		$listaMaterias = $insertMateria->insertarMaterias($dato);
 		break;
 	case 'patch':
 		break;

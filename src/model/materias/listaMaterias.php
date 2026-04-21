@@ -39,7 +39,7 @@ class listaMaterias
 			$listaMaterias[] = $materia;
 		}
 
-		$JsonListaMaterias = json_encode($listaMaterias);
+		$JsonListaMaterias = json_encode($listaMaterias) ;
 		
 		return $JsonListaMaterias;
 
