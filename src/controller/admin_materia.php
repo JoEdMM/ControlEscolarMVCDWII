@@ -7,10 +7,12 @@ require_once(BASE_PATH . '/src/model/materias/actualizarMateria.php');
 require_once(BASE_PATH . '/src/model/materias/eliminarMateria.php');
 require_once(BASE_PATH . '/src/model/unidades/eliminarUnidad.php');
 require_once(BASE_PATH . '/src/model/unidades/insertUnidades.php');
+require_once(BASE_PATH . '/src/model/unidades/actualizarUnidad.php');
 require_once(BASE_PATH . '/src/model/Materias.php');
 
 $insertMateria = new insertMaterias();
 $actualizarMateria = new actualizarMateria();
+$actualizarUnidad = new actualizarUnidad();
 $eliminarMateria = new eliminarMateria();
 $eliminarUnidad = new eliminarUnidad();
 $insertUnidad = new insertUnidades();
@@ -46,6 +48,25 @@ if (isset($_POST['insertar'])) {
 	$actualizarMateria->actualizarMateria($materia);
 	header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
 	// para que se pueda acualizar la existencia de un mate$materia 	
+}elseif (isset($_POST['actualizarUnidad'])) {
+    $nombres = $_POST['unidades']; // Es un arreglo (unidades[])
+    $ids = $_POST['ids'];           // Es un arreglo (ids[])
+    //$clave = $_POST['claveMateria'];
+
+    // Recorremos cada unidad enviada desde el formulario
+    foreach ($nombres as $index => $nombreUnidad) {
+        $materiaTemp = new Materias();
+        //$materiaTemp->setClaveMateria($clave);
+        
+        // ¡OJO! Tu clase Materias debe tener un método para el ID de la UNIDAD 
+        // y otro para el NOMBRE de la unidad.
+        $materiaTemp->setUnidades($nombreUnidad); 
+        $materiaTemp->setIdUnidad($ids[$index]); // Necesitas saber qué ID específico actualizar
+
+        // Llamas al modelo por cada unidad
+        $actualizarUnidad->actualizarUnidad($materiaTemp);
+		header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
+    }
 } elseif ($_GET['accion'] == 'e') {
 	$eliminarUnidad->eliminarUnidad($_GET['claveMateria']);
 	$eliminarMateria->eliminarMateria($_GET['claveMateria']);
@@ -53,6 +74,8 @@ if (isset($_POST['insertar'])) {
 	// si la variable accion enviada por GET es == 'a', envía a la página actualizar.php
 } elseif ($_GET['accion'] == 'a') {
 	header('Location:' . BASE_URL . '/src/view/Materias/actualizar.php');
+} elseif ($_GET['accion'] == 'uu') {
+	header('Location:' . BASE_URL . '/src/view/Materias/actualizarUnidades.php');
 }
 
 ?>

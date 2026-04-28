@@ -1,11 +1,14 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
+require_once BASE_PATH . "/src/model/unidades/obtenerUnidades.php";
 require_once BASE_PATH . "/src/model/materias/obtenerMaterias.php";
 require_once BASE_PATH . "/src/model/Materias.php";
+$obtenerUnidades = new obtenerUnidades();
 $obtenerMaterias = new obtenerMaterias();
 $materia = new Materias();
 //busca el libro utilizando el id, que es enviado por GET desde la vista mostrar.php
-$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
+$unidades = $obtenerUnidades->obtenerUnidades($_GET['claveMateria']);
+
 
 // $unidades=$crud->obtenerUnidades($_GET['claveMateria']);
 // $unid = count($unidades);
@@ -13,7 +16,7 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 <html>
 
 <head>
-	<title>Modificación Artículos</title>
+	<title>Modificación Unidades</title>
 	<link rel="stylesheet" href="<?= BASE_URL ?>/bootstrap/css/bootstrap.min.css" />
 </head>
 
@@ -87,39 +90,27 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 </style>
 
 <body>
-	<h2 align="center">Modificación Artículos</h2>
+	<h2 align="center">Modificación Unidades</h2>
 	<form action='<?= BASE_URL ?>/src/controller/admin_materia.php' method='post'>
+
 		<table>
-			<tr>
-				<input type='hidden' name='claveMateria' value='<?php echo $materia->getClaveMateria() ?>'>
-				<td class="cambiocolor">Clave materia:</td>
-				<td><input class="noeditar" type='text' name='claveMateria'
-						value='<?php echo $materia->getClaveMateria() ?>' readonly></td>
-			</tr>
-			<tr>
-				<td class="cambiocolor">Nombre:</td>
-				<td><input type='text' name='nombre' value='<?php echo $materia->getnombre() ?>'></td>
-			</tr>
-			<tr>
-				<td class="cambiocolor">Semestre:</td>
-				<td><input type='number' name='semestre' min="0" max="100"
-						value='<?php echo $materia->getSemestre() ?>'>
-				</td>
-			</tr>
-			<tr>
-				<td class="cambiocolor">Horas:</td>
-				<td><input type='number' name='horas' min="0" max="18" value='<?php echo $materia->getHoras() ?>'></td>
-			</tr>
-			<tr>
-				<td class="cambiocolor">Creditos:</td>
-				<td><input type='text' name='creditos' size="1" value='<?php echo $materia->getCreditos() ?>'></td>
-			</tr>
+			<?php foreach ($unidades as $unid) { ?>
+				<tr>
+					<td class="cambiocolor">Unidades:</td>
+					<td>
+						<!-- Añadimos [] al name para crear un arreglo -->
+						<input type='text' name='unidades[]' value='<?= $unid['Nombre'] ?>'>
+
+						<!-- Cambiamos el value por el ID real y el name a arreglo -->
+						<input type='hidden' name='ids[]' value='<?= $unid['id'] ?>'>
+					</td>
+				</tr>
+			<?php } ?>
 			<!-- <tr>
-			<td class="cambiocolor">Uniades:</td>
-			<td><input type='text' name='unidades' size="1" value='<?= $materia->getUnidades() ?>'></td>
+			
 		</tr> -->
 			<tr>
-				<input type='hidden' name='actualizar' value='actualizar'>
+				<input type='hidden' name='actualizarUnidad' value='actualizarUnidad'>
 		</table>
 		<div class="container-fluid py-5">
 			<div class="row align-items-center text-center gap-5">
@@ -131,14 +122,9 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 						<button type="button">Volver</button>
 					</a>
 				</div>
-				<div class="col-12 col-md-1">
-					<a href="actualizarUnidades.php?claveMateria=<?= $materia->getClaveMateria() ?>&accion=uu">
-						<button type="button" class="px-4 text-nowrap">Editar Unidades</button>
-					</a>
-				</div>
 			</div>
 		</div>
-		
+
 	</form>
 </body>
 

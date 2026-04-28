@@ -15,7 +15,7 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 <head>
 	<title>Visualizar Artículos</title>
 	<link rel="stylesheet" href="<?= BASE_URL ?>/bootstrap/css/bootstrap.min.css" />
-	
+
 </head>
 <style>
 	h2 {
@@ -70,8 +70,6 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 		background-color: #C5C5C5;
 		color: white;
 	}
-
-
 </style>
 
 <body>
@@ -83,7 +81,8 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 			<tr>
 				<input type='hidden' name='claveMateria' value='<?= $materia->getClaveMateria() ?>'>
 				<td class="cambiocolor">Clave materia:</td>
-				<td class=""><input type='text' name='claveMateria' value='<?= $materia->getClaveMateria() ?>' readonly></td>
+				<td class=""><input type='text' name='claveMateria' value='<?= $materia->getClaveMateria() ?>' readonly>
+				</td>
 			<tr>
 				<td class="cambiocolor">Nombre:</td>
 				<td><input type='text' name='nombre' value='<?= $materia->getnombre() ?>' readonly></td>
@@ -106,20 +105,20 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 		<!--input type='submit' value='Guardar'>-->
 		<br>
 		<div class="container py-5">
-		<div class="row align-items-center text-center gap-5">
-			<div class="col-12 col-md-1">
-				<a href="mostrar.php" class="">
-					<button type="button">Nuevo</button>
-				</a>
-			</div>
-			<div class="col-12 col-md-1">
+			<div class="row align-items-center text-center gap-5">
+				<div class="col-12 col-md-1">
+					<a href="mostrar.php" class="">
+						<button type="button">Nuevo</button>
+					</a>
+				</div>
+				<div class="col-12 col-md-1">
 
-				<a href="unidades.php?claveMateria=<?= $materia->getClaveMateria() ?>" class="">
-					<button type="button" class="px-5 text-nowrap">Ver Unidades</button>
-				</a>
+					<a href="unidades.php?claveMateria=<?= $materia->getClaveMateria() ?>" class="">
+						<button type="button" class="px-5 text-nowrap">Ver Unidades</button>
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
 	</form>
 </body>
 

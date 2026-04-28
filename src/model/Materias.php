@@ -6,6 +6,8 @@
 		private $horas;
 		private $creditos;
 		private $unidades;
+		private $idUnidad;
+
 
 		function __construct(){}
 
@@ -54,6 +56,14 @@
 
 		public function setUnidades($unidades){
 			$this->unidades = $unidades;
+		}
+
+		public function getIdUnidad(){
+		return $this->idUnidad;
+		}
+
+		public function setIdUnidad($idUnidad){
+			$this->idUnidad = $idUnidad;
 		}
 	}
 ?>
