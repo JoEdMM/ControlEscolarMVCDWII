@@ -36,7 +36,8 @@ switch ($method) {
 				header("Content-Type: application/json; charset=UTF-8");
 				if (isset($_GET['claveMateria'])) {
 					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
-					var_dump($materia);
+					echo ($materia);
+					//var_dump($materia);
 				} else {
 					header("Content-Type: application/json; charset=UTF-8");
 
