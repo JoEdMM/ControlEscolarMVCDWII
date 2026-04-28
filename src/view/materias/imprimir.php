@@ -81,7 +81,7 @@ $arrayMaterias=$listaMaterias->listaMaterias();
 				<td align="center"><?= $materia->getSemestre() ?></td>
 				<td align="center"><?= $materia->getHoras()?></td>
 				<td align="center"><?= $materia->getCreditos()?></td>
-				<td align="center"><?= $materia->getUnidades()?></td>
+				
 
 			</tr>
 			<?php }?>

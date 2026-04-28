@@ -37,10 +37,6 @@
 			<td class="cambiocolor">Creditos:</td>
 			<td><input type='text' name='creditos' size=4></td>
 		</tr>
-		<tr>	
-			<td class="cambiocolor">Unidades:</td>
-			<td><input type='number' name='unidades'  min="0" max="12"></td>
-		</tr>
 		<input type='hidden' name='insertar' value='insertar'>
 	</table>
 	<br>

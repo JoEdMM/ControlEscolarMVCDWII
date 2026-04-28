@@ -33,7 +33,6 @@ $arrayMaterias = $listaMaterias->listaMaterias();
 			<td align="center" class="cambiocolor">Semestre</td>
 			<td align="center" class="cambiocolor">Horas</td>
 			<td align="center" class="cambiocolor">Creditos</td>
-			<td align="center" class="cambiocolor">Unidades</td>
 			<td align="center" class="cambiocolor">Visualiza</td>
 			<td align="center" class="cambiocolor">Edita</td>
 			<td align="center" class="cambiocolor">Borra</td>
@@ -48,7 +47,6 @@ $arrayMaterias = $listaMaterias->listaMaterias();
 					<td align="center"><?= $materia->getHoras() ?></td>
 
 					<td align="center"><?= $materia->getCreditos() ?></td>
-					<td align="center"><a href="unidades.php?claveMateria=<?= $materia->getClaveMateria() ?>">Unidades</a></td>
 					<!-- implementación de imagenes-->
 					<td align="center"><a href="visualizar.php?claveMateria=<?= $materia->getClaveMateria() ?>">
 							<img src="<?= BASE_URL ?>/imagenes/visualiza.jpg" alt="Visualizar" width="24" height="24"></a>
