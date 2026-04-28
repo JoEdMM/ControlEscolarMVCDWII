@@ -2,7 +2,7 @@
 // incluye la clase Db
 require_once(BASE_PATH . '/src/config/conexion.php');
 require_once(BASE_PATH . '/src/model/Materias.php');
-require_once(BASE_PATH . '/src/model/unidades/obtenerUnidades_Id.php');
+
 
 
 class listaMaterias
@@ -13,7 +13,6 @@ class listaMaterias
 	{
 		$this->conexion = Db::conectar();
 		
-		$this->unidadxID = new obtenerUnidadesId();
 	}
 
 	
@@ -32,9 +31,6 @@ class listaMaterias
 			$myMateria->setHoras($materia['horas']);
 			$myMateria->setCreditos($materia['creditos']);
 			$claveMateria = $materia['claveMateria'];
-			$unidades = $this->unidadxID->obtenerUnidadesporClave($claveMateria);
-			$numUnidades = count($unidades);
-			$myMateria->setUnidades($numUnidades);
 			//$myMateria->setUnidades($numUnidades);
 			//$myMateria->setExistencia($materia['existencia']);
 			$listaMaterias[] = $myMateria;

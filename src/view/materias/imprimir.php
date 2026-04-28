@@ -71,7 +71,7 @@ $arrayMaterias=$listaMaterias->listaMaterias();
 			<td align="center" class="cambiocolor">Semestre</td>
 			<td align="center" class="cambiocolor">Horas</td>
 			<td align="center" class="cambiocolor">Creditos</td>
-			<td align="center" class="cambiocolor">Unidades</td>
+		
 		</head>
 		<body>
 			<?php foreach ($arrayMaterias as $materia) {?>
@@ -93,8 +93,6 @@ $arrayMaterias=$listaMaterias->listaMaterias();
         	<button type="button">Regresar</button>
     	</a>
 	</div>
-	<div align="center">
-        	<button type="button" onclick="window.print()">Imprimir</button>
-	</div>
+	
 </body>
 </html>
