@@ -1,21 +1,20 @@
 <?php
 //incluye la clase Libro y CrudLibro
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
-require_once BASE_PATH . "/src/model/materias/listaMaterias.php";
-require_once BASE_PATH . "/src/model/unidades/obtenerUnidades.php";
-require_once BASE_PATH . "/src/model/unidades/obtenerUnidades_Id.php";
+require_once BASE_PATH . "/src/model/materias/gestores/GestorMaterias.php";
+require_once BASE_PATH . "/src/model/unidades/gestores/GestorUnidades.php";
 require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
 require_once BASE_PATH . "/src/model/unidades/entidades/Unidades.php";
-$listaMaterias = new listaMaterias();
-$obtenerUnidades = new obtenerUnidades();
-$obtenerUnidadesId = new obtenerUnidadesId();
-$materiaeria = new Materias();
+
+$gestorMaterias = new GestorMaterias();
+$gestorUnidades = new GestorUnidades();
+$materia = new Materias();
 $unidad = new Unidades();
 //obtiene todos los libros con el método mostrar de la clase crud
-$arrayMaterias = $listaMaterias->listaMaterias();
-$claveMateria = $materiaeria->getClaveMateria();
+$arrayMaterias = $gestorMaterias->listaMaterias();
+$claveMateria = $materia->getClaveMateria();
 
-$arrayUnidades = $obtenerUnidades->obtenerUnidades($claveMateria);
+$arrayUnidades = $gestorUnidades->obtenerUnidades($claveMateria);
 
 ?>
 
@@ -96,7 +95,7 @@ $arrayUnidades = $obtenerUnidades->obtenerUnidades($claveMateria);
 					<td align="center"><?= $materia->getCreditos() ?></td>
 
 					<?php
-					$unidades = $obtenerUnidades->obtenerUnidades($materia->getClaveMateria());
+					$unidades = $gestorUnidades->obtenerUnidades($materia->getClaveMateria());
 					?>
 
 					<td align="center">
