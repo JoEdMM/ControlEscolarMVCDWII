@@ -1,11 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
-require_once BASE_PATH . "/src/model/materias/obtenerMaterias.php";
-require_once BASE_PATH . "/src/model/Materias.php";
-$obtenerMaterias = new obtenerMaterias();
+require_once(BASE_PATH . '/src/model/materias/gestores/GestorMaterias.php');
+require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
+$gestorMaterias = new GestorMaterias();
 $materia = new Materias();
 //busca el libro utilizando el id, que es enviado por GET desde la vista mostrar.php
-$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
+$materia = $gestorMaterias->obtenerMateria($_GET['claveMateria']);
 
 ?>
 <html>

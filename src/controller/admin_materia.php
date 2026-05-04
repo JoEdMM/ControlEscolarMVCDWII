@@ -2,24 +2,16 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
 
 //incluye la clase Libro y CrudLibro
-require_once(BASE_PATH . '/src/model/materias/insertMaterias.php');
-require_once(BASE_PATH . '/src/model/materias/actualizarMateria.php');
-require_once(BASE_PATH . '/src/model/materias/eliminarMateria.php');
-require_once(BASE_PATH . '/src/model/unidades/eliminarUnidad.php');
-require_once(BASE_PATH . '/src/model/unidades/insertUnidades.php');
-require_once(BASE_PATH . '/src/model/unidades/actualizarUnidad.php');
-require_once(BASE_PATH . '/src/model/Materias.php');
-require_once(BASE_PATH . '/src/model/Unidades.php');
+require_once(BASE_PATH . '/src/model/materias/entidades/Materias.php');
+require_once(BASE_PATH . '/src/model/unidades/entidades/Unidades.php'); 
+require_once(BASE_PATH . '/src/model/materias/gestores/GestorMaterias.php');
+require_once(BASE_PATH . '/src/model/unidades/gestores/GestorUnidades.php');
 
-$insertMateria = new insertMaterias();
-$actualizarMateria = new actualizarMateria();
-$actualizarUnidad = new actualizarUnidad();
-$eliminarMateria = new eliminarMateria();
-$eliminarUnidad = new eliminarUnidad();
-$insertUnidad = new insertUnidades();
+$gestorMaterias = new GestorMaterias();
+$gestorUnidades = new GestorUnidades();
+
 $materia = new Materias();
 $unidad = new Unidades();
-
 
 // si el elemento insertar no viene nulo llama al crud e inserta un libro
 if (isset($_POST['insertar'])) {
@@ -31,11 +23,11 @@ if (isset($_POST['insertar'])) {
 	$unidades = $_POST['unidades'];
 	$unidad->setUnidades($unidades);
 
-	$insertMateria->insertarMaterias($materia);
+	$gestorMaterias->insertarMateria($materia);
 	for ($i = 0; $i < $unidad->getUnidades(); $i++) {
 		// Pasamos el número actual (1, 2, 3, 4, 5)
 		$numeroActual = $i + 1;
-		$insertUnidad->insertarUnidad($materia->getClaveMateria(), $numeroActual);
+		$gestorUnidades->insertarUnidad($materia->getClaveMateria(), $numeroActual);
 	}
 	//llama a la función insertar definida en el crud
 
@@ -47,7 +39,7 @@ if (isset($_POST['insertar'])) {
 	$materia->setSemestre($_POST['semestre']);
 	$materia->setHoras($_POST['horas']);
 	$materia->setCreditos($_POST['creditos']);
-	$actualizarMateria->actualizarMateria($materia);
+	$gestorMaterias->actualizarMateria($materia);
 	header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
 	// para que se pueda acualizar la existencia de un mate$materia 	
 }elseif (isset($_POST['actualizarUnidad'])) {
@@ -63,12 +55,12 @@ if (isset($_POST['insertar'])) {
         $unidad->setIdUnidad($ids[$index]); // Necesitas saber qué ID específico actualizar
 
         // Llamas al modelo por cada unidad
-        $actualizarUnidad->actualizarUnidad($unidad);
+        $gestorUnidades->actualizarUnidad($unidad);
 		header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
     }
 } elseif ($_GET['accion'] == 'e') {
-	$eliminarUnidad->eliminarUnidad($_GET['claveMateria']);
-	$eliminarMateria->eliminarMateria($_GET['claveMateria']);
+	$gestorUnidades->eliminarUnidad($_GET['claveMateria']);
+	$gestorMaterias->eliminarMateria($_GET['claveMateria']);
 	header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
 	// si la variable accion enviada por GET es == 'a', envía a la página actualizar.php
 } elseif ($_GET['accion'] == 'a') {

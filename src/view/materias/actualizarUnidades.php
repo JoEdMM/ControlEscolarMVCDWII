@@ -1,11 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
-require_once BASE_PATH . "/src/model/unidades/obtenerUnidades.php";
+require_once BASE_PATH . "/src/model/unidades/gestores/GestorUnidades.php";
 
-$obtenerUnidades = new obtenerUnidades();
+$gestorUnidades = new GestorUnidades();
 
 //busca el libro utilizando el id, que es enviado por GET desde la vista mostrar.php
-$unidades = $obtenerUnidades->obtenerUnidades($_GET['claveMateria']);
+$unidades = $gestorUnidades->obtenerUnidades($_GET['claveMateria']);
 
 
 // $unidades=$crud->obtenerUnidades($_GET['claveMateria']);

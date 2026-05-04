@@ -1,6 +1,6 @@
 <?php
 require_once(BASE_PATH . '/src/config/conexion.php');
-require_once(BASE_PATH . '/src/model/Materias.php');
+require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
 class actualizarMateria{
 
 	public $conexion;

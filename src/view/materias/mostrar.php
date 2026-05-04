@@ -1,13 +1,13 @@
 <?php
 //incluye la clase Libro y CrudLibro
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
-require_once BASE_PATH . "/src/model/materias/listaMaterias.php";
-require_once BASE_PATH . "/src/model/Materias.php";
+require_once BASE_PATH . "/src/model/materias/gestores/GestorMaterias.php";
+require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
 
-$listaMaterias = new listaMaterias();
+$gestorMaterias = new GestorMaterias();
 $materia = new Materias();
 //obtiene todos los libros con el método mostrar de la clase crud
-$arrayMaterias = $listaMaterias->listaMaterias();
+$arrayMaterias = $gestorMaterias->listaMaterias();
 ?>
 
 <html>

@@ -1,7 +1,7 @@
 <?php
 // incluye la clase Db
 require_once(BASE_PATH . '/src/config/conexion.php');
-require_once(BASE_PATH . '/src/model/Materias.php');
+require_once(BASE_PATH . '/src/model/materias/entidades/Materias.php');
 //require_once(BASE_PATH . '/src/model/Unidades.php');
 //require_once(BASE_PATH . '/src/model/unidades/obtenerUnidades_Id.php');
 

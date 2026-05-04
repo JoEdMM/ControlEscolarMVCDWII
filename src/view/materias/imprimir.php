@@ -4,8 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.
 require_once BASE_PATH . "/src/model/materias/listaMaterias.php";
 require_once BASE_PATH . "/src/model/unidades/obtenerUnidades.php";
 require_once BASE_PATH . "/src/model/unidades/obtenerUnidades_Id.php";
-require_once BASE_PATH . "/src/model/Materias.php";
-require_once BASE_PATH . "/src/model/Unidades.php";
+require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
+require_once BASE_PATH . "/src/model/unidades/entidades/Unidades.php";
 $listaMaterias = new listaMaterias();
 $obtenerUnidades = new obtenerUnidades();
 $obtenerUnidadesId = new obtenerUnidadesId();
