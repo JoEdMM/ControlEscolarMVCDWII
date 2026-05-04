@@ -28,7 +28,7 @@ class obtenerMaterias{
 
 
 		//valida que exista materia igual y manda a la pagina de error
-		if (!$materia && $numUnidades == 0) {
+		if ($materia == 0) {
 			header('Location: error.php');
 		} else {
 
@@ -38,13 +38,13 @@ class obtenerMaterias{
 			$myMateria->setSemestre($materia['semestre']);
 			$myMateria->setHoras($materia['horas']);
 			$myMateria->setCreditos($materia['creditos']);
-			$myMateria->setUnidades($numUnidades);
+			//$myMateria->setUnidades($numUnidades);
 			return $myMateria;
 
 		}
 
-		$selectUnidades = $db->prepare('SELECT * FROM Unidades WHERE MateriasClaveMateria=:claveMateria');
-		$selectUnidades->bindValue('claveMateria', $claveMateria);
-		$selectUnidades->execute();
+		// $selectUnidades = $db->prepare('SELECT * FROM Unidades WHERE MateriasClaveMateria=:claveMateria');
+		// $selectUnidades->bindValue('claveMateria', $claveMateria);
+		// $selectUnidades->execute();
 	}
 }

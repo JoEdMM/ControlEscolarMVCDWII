@@ -1,21 +1,31 @@
 <?php
 //incluye la clase Libro y CrudLibro
-require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php"; 
-require_once BASE_PATH ."/src/model/materias/listaMaterias.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
+require_once BASE_PATH . "/src/model/materias/listaMaterias.php";
+require_once BASE_PATH . "/src/model/unidades/obtenerUnidades.php";
+require_once BASE_PATH . "/src/model/unidades/obtenerUnidades_Id.php";
 require_once BASE_PATH . "/src/model/Materias.php";
-$listaMaterias=new listaMaterias();
-$materia= new Materias();
+require_once BASE_PATH . "/src/model/Unidades.php";
+$listaMaterias = new listaMaterias();
+$obtenerUnidades = new obtenerUnidades();
+$obtenerUnidadesId = new obtenerUnidadesId();
+$materiaeria = new Materias();
+$unidad = new Unidades();
 //obtiene todos los libros con el método mostrar de la clase crud
-$arrayMaterias=$listaMaterias->listaMaterias();
+$arrayMaterias = $listaMaterias->listaMaterias();
+$claveMateria = $materiaeria->getClaveMateria();
+
+$arrayUnidades = $obtenerUnidades->obtenerUnidades($claveMateria);
 
 ?>
 
 <html>
+
 <head>
 	<title>Mostrar Reporte de Materias</title>
 </head>
 <style>
-	h2{
+	h2 {
 		background-color: #F3823C;
 		color: white;
 		font: bold 20px Arial;
@@ -26,19 +36,19 @@ $arrayMaterias=$listaMaterias->listaMaterias();
 		border-radius: 10px;
 	}
 
-	table{
+	table {
 		border-collapse: collapse;
 		border: 1px solid white;
 	}
 
 	/*CAMBIO DE COLOR ENTRE TABLAS*/
 	table tr:nth-child(odd) {
-        background-color: #E9EBF5; 
-    }
+		background-color: #E9EBF5;
+	}
 
-    table tr:nth-child(even) {
-        background-color: #CFD4EA; 
-    }
+	table tr:nth-child(even) {
+		background-color: #CFD4EA;
+	}
 
 	.cambiocolor {
 		background-color: #4471C4;
@@ -48,23 +58,25 @@ $arrayMaterias=$listaMaterias->listaMaterias();
 
 	}
 
-	button{
+	button {
 		background-color: #4471C4;
-        color: white;
-        padding: 5px 20px;
+		color: white;
+		padding: 5px 20px;
 		border: 1px solid white;
 		border-radius: 10px;
 	}
 
-	button:hover{
+	button:hover {
 		background-color: #C5C5C5;
-        color: white;
+		color: white;
 	}
 </style>
+
 <body>
-	<h2 align = "center">Reporte del Catálogo de Materias</h2>
+	<h2 align="center">Reporte del Catálogo de Materias</h2>
 
 	<table border=1 align="center">
+
 		<head>
 			<td align="center" class="cambiocolor">Clave Materia</td>
 			<td align="center" class="cambiocolor">Nombre</td>
@@ -73,28 +85,36 @@ $arrayMaterias=$listaMaterias->listaMaterias();
 			<td align="center" class="cambiocolor">Creditos</td>
 			<td align="center" class="cambiocolor">Unidades</td>
 		</head>
-		<body>
-			<?php foreach ($arrayMaterias as $materia) {?>
-			<tr>
-				<td align="center"><?= $materia->getClaveMateria() ?></td>
-				<td align="center"><?= $materia->getNombre() ?></td>
-				<td align="center"><?= $materia->getSemestre() ?></td>
-				<td align="center"><?= $materia->getHoras()?></td>
-				<td align="center"><?= $materia->getCreditos()?></td>
-				<td align="center"><?= $materia->getUnidades()?></td>
 
-			</tr>
-			<?php }?>
+		<body>
+			<?php foreach ($arrayMaterias as $materia) { ?>
+				<tr>
+					<td align="center"><?= $materia->getClaveMateria() ?></td>
+					<td align="center"><?= $materia->getNombre() ?></td>
+					<td align="center"><?= $materia->getSemestre() ?></td>
+					<td align="center"><?= $materia->getHoras() ?></td>
+					<td align="center"><?= $materia->getCreditos() ?></td>
+
+					<?php
+					$unidades = $obtenerUnidades->obtenerUnidades($materia->getClaveMateria());
+					?>
+
+					<td align="center">
+						<?= count($unidades) . "<br>";?>
+					</td>
+				</tr>
+			<?php } ?>
 		</body>
 	</table>
 	<br><br>
 	<div align="center">
 		<a href="mostrar.php">
-        	<button type="button">Regresar</button>
-    	</a>
+			<button type="button">Regresar</button>
+		</a>
 	</div>
 	<div align="center">
-        	<button type="button" onclick="window.print()">Imprimir</button>
+		<button type="button" onclick="window.print()">Imprimir</button>
 	</div>
 </body>
+
 </html>

@@ -2,18 +2,19 @@
 // incluye la clase Db
 require_once(BASE_PATH . '/src/config/conexion.php');
 require_once(BASE_PATH . '/src/model/Materias.php');
-require_once(BASE_PATH . '/src/model/unidades/obtenerUnidades_Id.php');
+//require_once(BASE_PATH . '/src/model/Unidades.php');
+//require_once(BASE_PATH . '/src/model/unidades/obtenerUnidades_Id.php');
 
 
 class listaMaterias
 {
 	public $conexion;
-	private $unidadxID;
+	//private $unidadxID;
     public function __construct()
 	{
 		$this->conexion = Db::conectar();
 		
-		$this->unidadxID = new obtenerUnidadesId();
+		//$this->unidadxID = new obtenerUnidadesId();
 	}
 
 	
@@ -26,15 +27,16 @@ class listaMaterias
 		foreach ($select->fetchAll() as $materia) {
 
 			$myMateria = new Materias();
+			//$myUnidad = new Unidades();
 			$myMateria->setClaveMateria($materia['claveMateria']);
 			$myMateria->setNombre($materia['nombre']);
 			$myMateria->setSemestre($materia['semestre']);
 			$myMateria->setHoras($materia['horas']);
 			$myMateria->setCreditos($materia['creditos']);
-			$claveMateria = $materia['claveMateria'];
-			$unidades = $this->unidadxID->obtenerUnidadesporClave($claveMateria);
-			$numUnidades = count($unidades);
-			$myMateria->setUnidades($numUnidades);
+			// $claveMateria = $materia['claveMateria'];
+			// $unidades = $this->unidadxID->obtenerUnidadesporClave($claveMateria);
+			// $numUnidades = count($unidades);
+			// $myUnidad->setUnidades($numUnidades);
 			//$myMateria->setUnidades($numUnidades);
 			//$myMateria->setExistencia($materia['existencia']);
 			$listaMaterias[] = $myMateria;

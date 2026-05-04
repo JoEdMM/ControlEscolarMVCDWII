@@ -114,10 +114,7 @@ $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 				<td class="cambiocolor">Creditos:</td>
 				<td><input type='text' name='creditos' size="1" value='<?php echo $materia->getCreditos() ?>'></td>
 			</tr>
-			<!-- <tr>
-			<td class="cambiocolor">Uniades:</td>
-			<td><input type='text' name='unidades' size="1" value='<?= $materia->getUnidades() ?>'></td>
-		</tr> -->
+		
 			<tr>
 				<input type='hidden' name='actualizar' value='actualizar'>
 		</table>

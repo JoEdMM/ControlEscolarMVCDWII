@@ -9,6 +9,7 @@ require_once(BASE_PATH . '/src/model/unidades/eliminarUnidad.php');
 require_once(BASE_PATH . '/src/model/unidades/insertUnidades.php');
 require_once(BASE_PATH . '/src/model/unidades/actualizarUnidad.php');
 require_once(BASE_PATH . '/src/model/Materias.php');
+require_once(BASE_PATH . '/src/model/Unidades.php');
 
 $insertMateria = new insertMaterias();
 $actualizarMateria = new actualizarMateria();
@@ -17,6 +18,7 @@ $eliminarMateria = new eliminarMateria();
 $eliminarUnidad = new eliminarUnidad();
 $insertUnidad = new insertUnidades();
 $materia = new Materias();
+$unidad = new Unidades();
 
 
 // si el elemento insertar no viene nulo llama al crud e inserta un libro
@@ -27,10 +29,10 @@ if (isset($_POST['insertar'])) {
 	$materia->setHoras($_POST['horas']);
 	$materia->setCreditos($_POST['creditos']);
 	$unidades = $_POST['unidades'];
-	$materia->setUnidades($unidades);
+	$unidad->setUnidades($unidades);
 
 	$insertMateria->insertarMaterias($materia);
-	for ($i = 0; $i < $materia->getUnidades(); $i++) {
+	for ($i = 0; $i < $unidad->getUnidades(); $i++) {
 		// Pasamos el número actual (1, 2, 3, 4, 5)
 		$numeroActual = $i + 1;
 		$insertUnidad->insertarUnidad($materia->getClaveMateria(), $numeroActual);
@@ -55,16 +57,13 @@ if (isset($_POST['insertar'])) {
 
     // Recorremos cada unidad enviada desde el formulario
     foreach ($nombres as $index => $nombreUnidad) {
-        $materiaTemp = new Materias();
+
         //$materiaTemp->setClaveMateria($clave);
-        
-        // ¡OJO! Tu clase Materias debe tener un método para el ID de la UNIDAD 
-        // y otro para el NOMBRE de la unidad.
-        $materiaTemp->setUnidades($nombreUnidad); 
-        $materiaTemp->setIdUnidad($ids[$index]); // Necesitas saber qué ID específico actualizar
+        $unidad->setUnidades($nombreUnidad); 
+        $unidad->setIdUnidad($ids[$index]); // Necesitas saber qué ID específico actualizar
 
         // Llamas al modelo por cada unidad
-        $actualizarUnidad->actualizarUnidad($materiaTemp);
+        $actualizarUnidad->actualizarUnidad($unidad);
 		header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
     }
 } elseif ($_GET['accion'] == 'e') {

@@ -7,8 +7,6 @@ $materia = new Materias();
 //busca el libro utilizando el id, que es enviado por GET desde la vista mostrar.php
 $materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 
-// $unidades=$crud->obtenerUnidades($_GET['claveMateria']);
-// $unid = count($unidades);
 ?>
 <html>
 
