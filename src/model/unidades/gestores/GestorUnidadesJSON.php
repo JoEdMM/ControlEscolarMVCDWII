@@ -5,7 +5,7 @@ require_once BASE_PATH . "/src/model/unidades/Interfaces/I_EscrituraUnidades.php
 require_once BASE_PATH . "/src/model/unidades/entidades/Unidades.php";
 require_once BASE_PATH . "/src/config/conexion.php";
 
-class GestorUnidades implements I_LecturaUnidades, I_EscrituraUnidades
+class GestorUnidadesJSON implements I_LecturaUnidades, I_EscrituraUnidades
 {
     private $conexion;
 
@@ -29,6 +29,31 @@ class GestorUnidades implements I_LecturaUnidades, I_EscrituraUnidades
         $selectUnidades->bindValue('claveMateria', $claveMateria);
         $selectUnidades->execute();
         return $selectUnidades->fetchAll();
+
+    }
+
+    public function obtenerUnidadesporClaveNum($claveMateria, $numUnidad)
+    {
+        $offset = (int) $numUnidad - 1;
+        if ($offset < 0)
+            $offset = 0;
+
+        $selectUnidades = $this->conexion->prepare('SELECT * FROM Unidades WHERE MateriasClaveMateria=:claveMateria ORDER BY id ASC LIMIT 1 OFFSET :offset');
+        $selectUnidades->bindValue('claveMateria', $claveMateria);
+        $selectUnidades->bindValue(':offset', $offset, PDO::PARAM_INT);
+        try {
+
+            $selectUnidades->execute();
+            $unidad = $selectUnidades->fetch(PDO::FETCH_ASSOC);
+
+            $JsonListaUnidad = json_encode($unidad);
+            return $JsonListaUnidad;
+        } catch (Throwable $e) {
+            echo json_encode(["message" => "Unidad No Encontrada"]);
+            return false;
+        }
+
+
 
     }
 
@@ -58,6 +83,23 @@ class GestorUnidades implements I_LecturaUnidades, I_EscrituraUnidades
         $eliminar->bindValue('claveMateria', $claveMateria);
         $eliminar->execute();
     }
+
+    public function eliminarUnidad_Id_Num($unidades)
+	{
+		// $offset = (int) $unidades - 1;
+		// if ($offset < 0)
+		// 	$offset = 0;
+		$eliminar = $this->conexion->prepare('DELETE FROM Unidades WHERE id=:id ');
+		$eliminar->bindValue('id', $unidades);
+
+		try {
+			$eliminar->execute();
+		} catch (Throwable $e) {
+			// Code to handle the exception or error
+			http_response_code(400);
+			echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
+		}
+	}
 }
 
 ?>

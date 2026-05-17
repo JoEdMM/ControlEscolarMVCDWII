@@ -1,0 +1,6 @@
+Options -Indexes
+RewriteEngine On
+RewriteBase /ControlEscolarMVCDWII/
+RewriteRule ^catalogo/materias/([0-9]+)/?$ src/controller/admin_materia.php?claveMateria=$1 [L,QSA]
+RewriteRule ^catalogo/materias/([0-9]+)/([0-9]+)/?$ src/controller/admin_materia.php?claveMateria=$1&unidades=$2 [L,QSA]
+RewriteRule ^catalogo/materias/?$ src/controller/admin_materia.php [L,QSA]

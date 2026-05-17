@@ -4,69 +4,113 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.
 //incluye la clase Libro y CrudLibro
 require_once(BASE_PATH . '/src/model/materias/entidades/Materias.php');
 require_once(BASE_PATH . '/src/model/unidades/entidades/Unidades.php'); 
-require_once(BASE_PATH . '/src/model/materias/gestores/GestorMaterias.php');
-require_once(BASE_PATH . '/src/model/unidades/gestores/GestorUnidades.php');
+require_once(BASE_PATH . '/src/model/materias/gestores/GestorMateriasJSON.php');
+require_once(BASE_PATH . '/src/model/unidades/gestores/GestorUnidadesJSON.php');
 
-$gestorMaterias = new GestorMaterias();
-$gestorUnidades = new GestorUnidades();
+$gestorMaterias = new GestorMateriasJSON();
+$gestorUnidades = new GestorUnidadesJSON();
 
 $materia = new Materias();
 $unidad = new Unidades();
 
-// si el elemento insertar no viene nulo llama al crud e inserta un libro
-if (isset($_POST['insertar'])) {
-	$materia->setClaveMateria($_POST['claveMateria']);
-	$materia->setNombre($_POST['nombre']);
-	$materia->setSemestre($_POST['semestre']);
-	$materia->setHoras($_POST['horas']);
-	$materia->setCreditos($_POST['creditos']);
-	$unidades = $_POST['unidades'];
-	$unidad->setUnidades($unidades);
+$method = $_SERVER['REQUEST_METHOD'];
 
-	$gestorMaterias->insertarMateria($materia);
-	for ($i = 0; $i < $unidad->getUnidades(); $i++) {
-		// Pasamos el número actual (1, 2, 3, 4, 5)
-		$numeroActual = $i + 1;
-		$gestorUnidades->insertarUnidad($materia->getClaveMateria(), $numeroActual);
-	}
-	//llama a la función insertar definida en el crud
+$tipoDato = $_SERVER['HTTP_ACCEPT'];
 
-	header('Location:' . BASE_URL . '/src/view/Materias/mostrar.php');
-	// si el elemento de la vista con nombre actualizar no viene nulo, llama al crud y actualiza el libro
-} elseif (isset($_POST['actualizar'])) {
-	$materia->setClaveMateria($_POST['claveMateria']);
-	$materia->setNombre($_POST['nombre']);
-	$materia->setSemestre($_POST['semestre']);
-	$materia->setHoras($_POST['horas']);
-	$materia->setCreditos($_POST['creditos']);
-	$gestorMaterias->actualizarMateria($materia);
-	header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
-	// para que se pueda acualizar la existencia de un mate$materia 	
-}elseif (isset($_POST['actualizarUnidad'])) {
-    $nombres = $_POST['unidades']; // Es un arreglo (unidades[])
-    $ids = $_POST['ids'];           // Es un arreglo (ids[])
-    //$clave = $_POST['claveMateria'];
 
-    // Recorremos cada unidad enviada desde el formulario
-    foreach ($nombres as $index => $nombreUnidad) {
 
-        //$materiaTemp->setClaveMateria($clave);
-        $unidad->setUnidades($nombreUnidad); 
-        $unidad->setIdUnidad($ids[$index]); // Necesitas saber qué ID específico actualizar
+switch ($method) {
+	case 'GET':
+		switch ($tipoDato) {
+			case ("application/json"):
+				header("Content-Type: application/json; charset=UTF-8");
+				if (isset($_GET['claveMateria']) && isset($_GET['unidades'])) {
+					$materia = $gestorMaterias->obtenerMateria($_GET['claveMateria']);
+					$unidad = $gestorUnidades->obtenerUnidadesporClaveNum($_GET['claveMateria'], $_GET['unidades']);
 
-        // Llamas al modelo por cada unidad
-        $gestorUnidades->actualizarUnidad($unidad);
-		header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
-    }
-} elseif ($_GET['accion'] == 'e') {
-	$gestorUnidades->eliminarUnidad($_GET['claveMateria']);
-	$gestorMaterias->eliminarMateria($_GET['claveMateria']);
-	header('Location: ' . BASE_URL . '/src/view/Materias/mostrar.php');
-	// si la variable accion enviada por GET es == 'a', envía a la página actualizar.php
-} elseif ($_GET['accion'] == 'a') {
-	header('Location:' . BASE_URL . '/src/view/Materias/actualizar.php');
-} elseif ($_GET['accion'] == 'uu') {
-	header('Location:' . BASE_URL . '/src/view/Materias/actualizarUnidades.php');
+					if ($materia === 'false') {
+						echo json_encode(["message" => "Materia No Encontrada"]);
+						$materia = null;
+					} else {
+						echo json_encode(["message" => "Materia Encontrada"]);
+					}
+
+					echo ($materia);
+
+					if ($unidad === 'false') {
+						echo json_encode(["message" => "Unidad No Encontrada"]);
+						$unidad = null;
+					} else {
+						echo json_encode(["message" => "Unidad Encontrada"]);
+					}
+
+					echo ($unidad);
+					//var_dump($materia);
+				} elseif (isset($_GET['claveMateria'])) {
+					$materia = $gestorMaterias->obtenerMateria($_GET['claveMateria']);
+
+					if ($materia === 'false') {
+						echo json_encode(["message" => "Materia No Encontrada"]);
+						$materia = null;
+					} else {
+						echo json_encode(["message" => "Materia Encontrada"]);
+					}
+					echo ($materia);
+
+				} else {
+					header("Content-Type: application/json; charset=UTF-8");
+
+					$listaMaterias = $gestorMaterias->listaMaterias();
+					echo ($listaMaterias);
+				}
+				break;
+			case ("application/xml"):
+				header("Content-Type: application/xml; charset=UTF-8");
+				$listaMaterias = $curd_xml->mostrarXML();
+				break;
+			case ("application/csv"):
+
+				break;
+
+		}
+
+		break;
+
+	case 'POST':
+		$dato = json_decode(file_get_contents('php://input'), true);
+		$gestorMaterias->insertarMateria($dato);
+		break;
+
+
+	case 'PUT':
+		$dato = json_decode(file_get_contents("php://input"), true);
+		$gestorMaterias->actualizarMateria($dato);
+		break;
+
+	case 'DELETE':
+		switch ($tipoDato) {
+			case ("application/json"):
+				header("Content-Type: application/json; charset=UTF-8");
+				//$dato = json_decode(file_get_contents("php://input"), true);
+
+				if (isset($_GET['claveMateria']) && isset($_GET['unidades'])) {
+					$unidad = $gestorUnidades->obtenerUnidadesporClaveNum($_GET['claveMateria'], $_GET['unidades']);
+					$unidades = json_decode($unidad, true);
+
+					if ($unidad === 'false') {
+						echo json_encode(["message" => "Unidad Fue Eliminada o no Existe"]);
+						return;
+					}
+
+
+					$gestorUnidades->eliminarUnidad_Id_Num($unidades['id']);
+					echo json_encode(["message" => "Unidad Eliminada"]);
+					//$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
+				} elseif (isset($_GET['claveMateria'])) {
+					$gestorMaterias->eliminarMateria($_GET['claveMateria']);
+				}
+		}
+		break;
 }
 
 ?>
