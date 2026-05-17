@@ -41,7 +41,8 @@ switch ($method) {
 				} else {
 					header("Content-Type: application/json; charset=UTF-8");
 
-					echo $crud->listaMaterias();
+					$listaMaterias = $crud->listaMaterias();
+					echo($listaMaterias);
 				}
 				break;
 			case ("application/xml"):
@@ -69,7 +70,7 @@ switch ($method) {
 
 	case 'DELETE':
 		$dato = json_decode(file_get_contents('php://input'), true);
-		$listaMaterias = $insertMateria->insertarMaterias($dato);
+		$eliminarMateria->eliminarMateria($dato);
 		break;
 	case 'patch':
 		break;
