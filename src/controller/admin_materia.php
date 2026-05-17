@@ -8,12 +8,14 @@ require_once(BASE_PATH . '/src/model/materias/actualizarMateria.php');
 require_once(BASE_PATH . '/src/model/materias/eliminarMateria.php');
 require_once(BASE_PATH . '/src/model/unidades/eliminarUnidad.php');
 require_once(BASE_PATH . '/src/model/unidades/insertUnidades.php');
+require_once(BASE_PATH . '/src/model/unidades/obtenerUnidades_Id_Num.php');
 require_once(BASE_PATH . '/src/model/materias/obtenerMaterias.php');
 require_once(BASE_PATH . '/src/model/Materias.php');
 require_once(BASE_PATH . '/src/model/materias/listaMaterias_XML.php');
 
 $insertMateria = new insertMaterias();
 $actualizarMateria = new actualizarMateria();
+$obtenerUnidades_Id_Num = new obtenerUnidades_Id_Num();
 $eliminarMateria = new eliminarMateria();
 $eliminarUnidad = new eliminarUnidad();
 $insertUnidad = new insertUnidades();
@@ -34,11 +36,26 @@ switch ($method) {
 		switch ($tipoDato) {
 			case ("application/json"):
 				header("Content-Type: application/json; charset=UTF-8");
-				if (isset($_GET['claveMateria'])) {
+				if (isset($_GET['claveMateria'])&& isset($_GET['unidades'])) {
+					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
+					$unidad = $obtenerUnidades_Id_Num->obtenerUnidadesporClaveNum($_GET['claveMateria'], $_GET['unidades']);
+
+					echo ($materia);
+					if ($unidad === 'false') {
+						echo json_encode(["message" => "Unidad No Encontrada"]);
+						$unidad = null;
+					} else{
+						echo json_encode(["message" => "Unidad Encontrada"]);
+					}
+					echo ($unidad);
+					//var_dump($materia);
+				} 
+				elseif (isset($_GET['claveMateria'])) {
 					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 					echo ($materia);
-					//var_dump($materia);
-				} else {
+				}
+				
+				else {
 					header("Content-Type: application/json; charset=UTF-8");
 
 					$listaMaterias = $crud->listaMaterias();
@@ -69,6 +86,7 @@ switch ($method) {
 		break;
 
 	case 'DELETE':
+		header("Content-Type: application/json; charset=UTF-8");
 		$dato = json_decode(file_get_contents('php://input'), true);
 		$eliminarMateria->eliminarMateria($dato);
 		break;
