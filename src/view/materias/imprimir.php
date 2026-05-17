@@ -57,7 +57,7 @@ $arrayUnidades = $gestorUnidades->obtenerUnidades($claveMateria);
 
 	}
 
-	button {
+	button { 
 		background-color: #4471C4;
 		color: white;
 		padding: 5px 20px;
