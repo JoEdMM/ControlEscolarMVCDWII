@@ -9,6 +9,7 @@ require_once(BASE_PATH . '/src/model/materias/eliminarMateria.php');
 require_once(BASE_PATH . '/src/model/unidades/eliminarUnidad.php');
 require_once(BASE_PATH . '/src/model/unidades/insertUnidades.php');
 require_once(BASE_PATH . '/src/model/unidades/obtenerUnidades_Id_Num.php');
+require_once(BASE_PATH . '/src/model/unidades/eliminarMateria_Id_Num.php');
 require_once(BASE_PATH . '/src/model/materias/obtenerMaterias.php');
 require_once(BASE_PATH . '/src/model/Materias.php');
 require_once(BASE_PATH . '/src/model/materias/listaMaterias_XML.php');
@@ -18,6 +19,7 @@ $actualizarMateria = new actualizarMateria();
 $obtenerUnidades_Id_Num = new obtenerUnidades_Id_Num();
 $eliminarMateria = new eliminarMateria();
 $eliminarUnidad = new eliminarUnidad();
+$eliminarMateria_Id_Num = new eliminarMateria_Id_Num();
 $insertUnidad = new insertUnidades();
 $crud = new listaMaterias();
 $obtenerMaterias = new obtenerMaterias();
@@ -36,30 +38,37 @@ switch ($method) {
 		switch ($tipoDato) {
 			case ("application/json"):
 				header("Content-Type: application/json; charset=UTF-8");
-				if (isset($_GET['claveMateria'])&& isset($_GET['unidades'])) {
+				if (isset($_GET['claveMateria']) && isset($_GET['unidades'])) {
 					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 					$unidad = $obtenerUnidades_Id_Num->obtenerUnidadesporClaveNum($_GET['claveMateria'], $_GET['unidades']);
-
+					
 					echo ($materia);
+
 					if ($unidad === 'false') {
 						echo json_encode(["message" => "Unidad No Encontrada"]);
 						$unidad = null;
-					} else{
+					} else {
 						echo json_encode(["message" => "Unidad Encontrada"]);
 					}
+
 					echo ($unidad);
 					//var_dump($materia);
-				} 
-				elseif (isset($_GET['claveMateria'])) {
+				} elseif (isset($_GET['claveMateria'])) {
 					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
+					
+					if ($materia === 'false') {
+						echo json_encode(["message" => "Materia No Encontrada"]);
+						$materia = null;
+					} else {
+						echo json_encode(["message" => "Materia Encontrada"]);
+					}
 					echo ($materia);
-				}
-				
-				else {
+					
+				} else {
 					header("Content-Type: application/json; charset=UTF-8");
 
 					$listaMaterias = $crud->listaMaterias();
-					echo($listaMaterias);
+					echo ($listaMaterias);
 				}
 				break;
 			case ("application/xml"):
@@ -86,9 +95,28 @@ switch ($method) {
 		break;
 
 	case 'DELETE':
-		header("Content-Type: application/json; charset=UTF-8");
-		$dato = json_decode(file_get_contents('php://input'), true);
-		$eliminarMateria->eliminarMateria($dato);
+		switch ($tipoDato) {
+			case ("application/json"):
+				header("Content-Type: application/json; charset=UTF-8");
+				//$dato = json_decode(file_get_contents("php://input"), true);
+
+				if (isset($_GET['claveMateria']) && isset($_GET['unidades'])) {
+					$unidad = $obtenerUnidades_Id_Num->obtenerUnidadesporClaveNum($_GET['claveMateria'], $_GET['unidades']);
+					$unidades = json_decode($unidad, true);
+
+					if ($unidad === 'false') {
+						echo json_encode(["message" => "Unidad Fue Eliminada o no Existe"]);
+						return;
+					} 
+
+					
+					$eliminarMateria_Id_Num->eliminarMateria_Id_Num($unidades['id']);
+					echo json_encode(["message" => "Unidad Eliminada"]);
+					//$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
+				} elseif (isset($_GET['claveMateria'])) {
+					$eliminarMateria->eliminarMateria($_GET['claveMateria']);
+				}
+		}
 		break;
 	case 'patch':
 		break;

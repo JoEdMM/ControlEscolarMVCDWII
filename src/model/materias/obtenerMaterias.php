@@ -23,16 +23,17 @@ class obtenerMaterias{
 		$select = $db->prepare('SELECT * FROM Materias WHERE claveMateria=:claveMateria'); //inner join para capturar existencia y Materiass
 		$select->bindValue('claveMateria', $claveMateria);
 		try{
-			echo json_encode(["message" => "Materia Encontrada"]);
-		} catch (Throwable){
-			
-		}
-		$select->execute();
+			// echo json_encode(["message" => "Materia Encontrada"]);
+			$select->execute();
 
 		$materia = $select->fetch(PDO::FETCH_ASSOC);
 
 			$JsonListaMateria = json_encode($materia);
 			return $JsonListaMateria;
+		} catch (Throwable){
+			
+		}
+		
 
 	}
 }
