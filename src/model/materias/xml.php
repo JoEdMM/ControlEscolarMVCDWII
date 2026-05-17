@@ -31,6 +31,6 @@ function arrayXml($miArreglo)
     arrayToXml($miArreglo, $xml);
 
     // Imprimir o guardar el XML
-    echo $xml->asXML();
+    return $xml->asXML();
 }
 ?>

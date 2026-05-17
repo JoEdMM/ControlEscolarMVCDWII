@@ -41,7 +41,14 @@ switch ($method) {
 				if (isset($_GET['claveMateria']) && isset($_GET['unidades'])) {
 					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
 					$unidad = $obtenerUnidades_Id_Num->obtenerUnidadesporClaveNum($_GET['claveMateria'], $_GET['unidades']);
-					
+
+					if ($materia === 'false') {
+						echo json_encode(["message" => "Materia No Encontrada"]);
+						$materia = null;
+					} else {
+						echo json_encode(["message" => "Materia Encontrada"]);
+					}
+
 					echo ($materia);
 
 					if ($unidad === 'false') {
@@ -55,7 +62,7 @@ switch ($method) {
 					//var_dump($materia);
 				} elseif (isset($_GET['claveMateria'])) {
 					$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
-					
+
 					if ($materia === 'false') {
 						echo json_encode(["message" => "Materia No Encontrada"]);
 						$materia = null;
@@ -63,7 +70,7 @@ switch ($method) {
 						echo json_encode(["message" => "Materia Encontrada"]);
 					}
 					echo ($materia);
-					
+
 				} else {
 					header("Content-Type: application/json; charset=UTF-8");
 
@@ -107,9 +114,9 @@ switch ($method) {
 					if ($unidad === 'false') {
 						echo json_encode(["message" => "Unidad Fue Eliminada o no Existe"]);
 						return;
-					} 
+					}
 
-					
+
 					$eliminarMateria_Id_Num->eliminarMateria_Id_Num($unidades['id']);
 					echo json_encode(["message" => "Unidad Eliminada"]);
 					//$materia = $obtenerMaterias->obtenerMaterias($_GET['claveMateria']);
@@ -117,8 +124,6 @@ switch ($method) {
 					$eliminarMateria->eliminarMateria($_GET['claveMateria']);
 				}
 		}
-		break;
-	case 'patch':
 		break;
 }
 // si el elemento insertar no viene nulo llama al crud e inserta un libro
