@@ -5,7 +5,7 @@ require_once BASE_PATH . "/src/model/materias/Interfaces/I_EscrituraMaterias.php
 require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
 require_once BASE_PATH . "/src/config/conexion.php";
 
-class GestorMateriasXML
+class GestorMateriasCSV
 {
 	private $conexion;
 
@@ -16,7 +16,7 @@ class GestorMateriasXML
 	}
 
 	//Listado de todas las materias
-	public function mostrarXML()
+	public function mostrarCSV()
 	{
 		$listaMaterias = [];
 
@@ -28,38 +28,43 @@ class GestorMateriasXML
 			$listaMaterias[] = $materia;
 		}
 
-		$XmlListaMaterias = $this->arrayXml($listaMaterias);
+		$XmlListaMaterias = $this->arrayCsv($listaMaterias);
+		
 		//print_r($XmlListaMaterias);
 		return $XmlListaMaterias;
 	}
 
-	private function arrayXml($miArreglo)
+	private function arrayCsv($miArreglo)
 	{
-		// Iniciar con un nodo raíz
-		$xml = new SimpleXMLElement('<?xml version="1.0"?><root></root>');
-		$this->arrayToXml($miArreglo, $xml);
-
-		// Imprimir o guardar el XML
-		return $xml->asXML();
-	}
-
-	private function arrayToXml($data, $xmlData)
-	{
-		foreach ($data as $key => $value) {
-
-			if (is_array($value)) {
-				// Si es un sub-arreglo, crea un nodo y vuelve a llamar a la función
-				$subnode = $xmlData->addChild($key);
-				$this->arrayToXml($value, $subnode);
-			} else {
-				// Si es un valor, añade el nodo hijo
-				$xmlData->addChild("$key", htmlspecialchars("$value"));
-			}
-
+		if (empty($miArreglo)) {
+			return "";
 		}
+
+		// Abrimos un flujo en memoria para escribir el CSV temporalmente
+		$stream = fopen('php://temp', 'r+');
+
+		// 1. Insertar las cabeceras (los nombres de las columnas de la base de datos)
+		$cabeceras = array_keys($miArreglo[0]);
+		fputcsv($stream, $cabeceras);
+
+		// 2. Insertar las filas de datos
+		foreach ($miArreglo as $fila) {
+			fputcsv($stream, $fila);
+		}
+
+		// Rebobinar el puntero al inicio del flujo para poder leerlo
+		rewind($stream);
+
+		// Guardar el contenido del flujo en una variable
+		$csvString = stream_get_contents($stream);
+
+		// Cerrar el flujo
+		fclose($stream);
+
+		return $csvString;
 	}
 
-	public function obtenerMateriaXML($claveMateria)
+	public function obtenerMateriaCsv($claveMateria)
 	{
 
 
@@ -71,12 +76,13 @@ class GestorMateriasXML
 
 			$materia = $select->fetch(PDO::FETCH_ASSOC);
 
-			
-			if($materia === false){
+
+			if ($materia === false) {
 				return null;
-			}else{
-				$XmlMateria = $this->arrayXml($materia);
-				return $XmlMateria;
+			} else {
+				$csvMateria = $this->arrayCsv([$materia]);
+				
+				return $csvMateria;
 			}
 
 		} catch (Throwable) {
@@ -84,7 +90,7 @@ class GestorMateriasXML
 		}
 	}
 
-	public function insertarMateriaXML($materia)
+	public function insertarMateriaCSV($materia)
 	{
 		// Insertar el nuevo artículo
 		$insert = $this->conexion->prepare('INSERT INTO Materias (claveMateria, nombre, semestre, horas, creditos) VALUES (:claveMateria, :nombre, :semestre, :horas, :creditos)');
@@ -104,7 +110,7 @@ class GestorMateriasXML
 		}
 	}
 
-	public function actualizarMateriaXML($materia)
+	public function actualizarMateriaCSV($materia)
 	{
 		$actualizar = $this->conexion->prepare('UPDATE Materias SET claveMateria=:claveMateria, nombre=:nombre, semestre=:semestre, horas=:horas, creditos=:creditos WHERE claveMateria=:claveMateria');
 		$actualizar->bindValue('claveMateria', $materia['claveMateria']);

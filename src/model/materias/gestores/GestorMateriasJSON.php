@@ -66,7 +66,7 @@ class GestorMateriasJSON implements I_LecturaMaterias, I_EscrituraMaterias
 		} catch (Throwable $e) {
 			// Code to handle the exception or error
 			http_response_code(400);
-			echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
+			echo json_encode(["message" => "Materia ya creada: " . $e->getMessage()]);
 		}
 	}
 
