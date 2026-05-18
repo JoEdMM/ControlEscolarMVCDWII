@@ -5,7 +5,7 @@ require_once BASE_PATH . "/src/model/materias/Interfaces/I_EscrituraMaterias.php
 require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
 require_once BASE_PATH . "/src/config/conexion.php";
 
-class GestorMateriasXML
+class GestorMateriasXML implements I_LecturaMaterias, I_EscrituraMaterias
 {
 	private $conexion;
 
@@ -16,7 +16,7 @@ class GestorMateriasXML
 	}
 
 	//Listado de todas las materias
-	public function mostrarXML()
+	public function listaMaterias()
 	{
 		$listaMaterias = [];
 
@@ -59,7 +59,7 @@ class GestorMateriasXML
 		}
 	}
 
-	public function obtenerMateriaXML($claveMateria)
+	public function obtenerMateria($claveMateria)
 	{
 
 
@@ -71,10 +71,10 @@ class GestorMateriasXML
 
 			$materia = $select->fetch(PDO::FETCH_ASSOC);
 
-			
-			if($materia === false){
+
+			if ($materia === false) {
 				return null;
-			}else{
+			} else {
 				$XmlMateria = $this->arrayXml($materia);
 				return $XmlMateria;
 			}
@@ -84,8 +84,11 @@ class GestorMateriasXML
 		}
 	}
 
-	public function insertarMateriaXML($materia)
+	public function insertarMateria($materia)
 	{
+
+		$materiaObjt = simplexml_load_string($materia);
+		$materia = json_decode(json_encode($materiaObjt), true);
 		// Insertar el nuevo artículo
 		$insert = $this->conexion->prepare('INSERT INTO Materias (claveMateria, nombre, semestre, horas, creditos) VALUES (:claveMateria, :nombre, :semestre, :horas, :creditos)');
 
@@ -104,8 +107,10 @@ class GestorMateriasXML
 		}
 	}
 
-	public function actualizarMateriaXML($materia)
+	public function actualizarMateria($materia)
 	{
+		$materiaObjt = simplexml_load_string($materia);
+		$materia = json_decode(json_encode($materiaObjt), true);
 		$actualizar = $this->conexion->prepare('UPDATE Materias SET claveMateria=:claveMateria, nombre=:nombre, semestre=:semestre, horas=:horas, creditos=:creditos WHERE claveMateria=:claveMateria');
 		$actualizar->bindValue('claveMateria', $materia['claveMateria']);
 		$actualizar->bindValue('nombre', $materia['nombre']);
@@ -123,6 +128,21 @@ class GestorMateriasXML
 		}
 	}
 
+	public function eliminarMateria($claveMateria)
+	{
+		$eliminar = $this->conexion->prepare('DELETE FROM Materias WHERE claveMateria=:claveMateria');
+		$eliminar->bindValue('claveMateria', $claveMateria);
+
+		try {
+			$eliminar->execute();
+			
+			echo json_encode(["message" => "Materia eliminada"]);
+		} catch (Throwable $e) {
+			// Code to handle the exception or error
+			http_response_code(400);
+			echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
+		}
+	}
 
 
 }

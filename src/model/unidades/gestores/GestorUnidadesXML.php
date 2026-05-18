@@ -5,7 +5,7 @@ require_once BASE_PATH . "/src/model/unidades/Interfaces/I_EscrituraUnidades.php
 require_once BASE_PATH . "/src/model/unidades/entidades/Unidades.php";
 require_once BASE_PATH . "/src/config/conexion.php";
 
-class GestorUnidadesXML
+class GestorUnidadesXML implements I_LecturaUnidades, I_EscrituraUnidades
 {
 	private $conexion;
 
@@ -16,22 +16,22 @@ class GestorUnidadesXML
 	}
 
 	//Listado de todas las materias
-	public function mostrarXML()
-	{
-		$listaMaterias = [];
+	// public function mostrarXML()
+	// {
+	// 	$listaMaterias = [];
 
-		$select = $this->conexion->query('SELECT * FROM materias ORDER BY CAST(claveMateria AS UNSIGNED) ASC'); //inner join para ver las existencia y Materiass
+	// 	$select = $this->conexion->query('SELECT * FROM materias ORDER BY CAST(claveMateria AS UNSIGNED) ASC'); //inner join para ver las existencia y Materiass
 
 
-		foreach ($select->fetchall(PDO::FETCH_ASSOC) as $materia) {
+	// 	foreach ($select->fetchall(PDO::FETCH_ASSOC) as $materia) {
 
-			$listaMaterias[] = $materia;
-		}
+	// 		$listaMaterias[] = $materia;
+	// 	}
 
-		$XmlListaMaterias = $this->arrayXml($listaMaterias);
-		//print_r($XmlListaMaterias);
-		return $XmlListaMaterias;
-	}
+	// 	$XmlListaMaterias = $this->arrayXml($listaMaterias);
+	// 	//print_r($XmlListaMaterias);
+	// 	return $XmlListaMaterias;
+	// }
 
 	private function arrayXml($miArreglo)
 	{
@@ -59,7 +59,7 @@ class GestorUnidadesXML
 		}
 	}
 
-	public function obtenerUnidadesporClaveNumXML($claveMateria, $numUnidad)
+	public function obtenerUnidadesporClaveNuM($claveMateria, $numUnidad)
 	{
 		$offset = (int) $numUnidad - 1;
 		if ($offset < 0)
@@ -73,9 +73,9 @@ class GestorUnidadesXML
 			$selectUnidades->execute();
 			$unidad = $selectUnidades->fetch(PDO::FETCH_ASSOC);
 
-			if($unidad === false){
+			if ($unidad === false) {
 				return null;
-			}else{
+			} else {
 				$XmlUnidad = $this->arrayXml($unidad);
 				return $XmlUnidad;
 			}
@@ -86,13 +86,15 @@ class GestorUnidadesXML
 
 	}
 
-	public function eliminarUnidad_Id_NumXML($unidades)
+	public function eliminarUnidad_Id_Num($unidades)
 	{
+		$unidadObjt = simplexml_load_string($unidades);
+		$unidades = json_decode(json_encode($unidadObjt), true);
 		// $offset = (int) $unidades - 1;
 		// if ($offset < 0)
 		// 	$offset = 0;
 		$eliminar = $this->conexion->prepare('DELETE FROM Unidades WHERE id=:id ');
-		$eliminar->bindValue('id', $unidades);
+		$eliminar->bindValue('id', $unidades['id']);
 
 		try {
 			$eliminar->execute();

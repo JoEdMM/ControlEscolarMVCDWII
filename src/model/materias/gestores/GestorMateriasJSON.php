@@ -52,6 +52,8 @@ class GestorMateriasJSON implements I_LecturaMaterias, I_EscrituraMaterias
 
 	public function insertarMateria($materia)
 	{
+		$materia = json_decode($materia, true); 
+		
 		// Insertar el nuevo artículo
 		$insert = $this->conexion->prepare('INSERT INTO Materias (claveMateria, nombre, semestre, horas, creditos) VALUES (:claveMateria, :nombre, :semestre, :horas, :creditos)');
 
@@ -72,6 +74,8 @@ class GestorMateriasJSON implements I_LecturaMaterias, I_EscrituraMaterias
 
 	public function actualizarMateria($materia)
 	{
+		$materia = json_decode($materia, true); 
+		
 		$actualizar = $this->conexion->prepare('UPDATE Materias SET claveMateria=:claveMateria, nombre=:nombre, semestre=:semestre, horas=:horas, creditos=:creditos WHERE claveMateria=:claveMateria');
 		$actualizar->bindValue('claveMateria', $materia['claveMateria']);
 		$actualizar->bindValue('nombre', $materia['nombre']);

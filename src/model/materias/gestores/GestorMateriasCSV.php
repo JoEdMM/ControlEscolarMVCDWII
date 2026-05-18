@@ -5,7 +5,7 @@ require_once BASE_PATH . "/src/model/materias/Interfaces/I_EscrituraMaterias.php
 require_once BASE_PATH . "/src/model/materias/entidades/Materias.php";
 require_once BASE_PATH . "/src/config/conexion.php";
 
-class GestorMateriasCSV
+class GestorMateriasCSV implements I_LecturaMaterias, I_EscrituraMaterias
 {
 	private $conexion;
 
@@ -16,7 +16,7 @@ class GestorMateriasCSV
 	}
 
 	//Listado de todas las materias
-	public function mostrarCSV()
+	public function listaMaterias()
 	{
 		$listaMaterias = [];
 
@@ -28,10 +28,10 @@ class GestorMateriasCSV
 			$listaMaterias[] = $materia;
 		}
 
-		$XmlListaMaterias = $this->arrayCsv($listaMaterias);
-		
-		//print_r($XmlListaMaterias);
-		return $XmlListaMaterias;
+		$CsvListaMaterias = $this->arrayCsv($listaMaterias);
+
+		//print_r($CsvListaMaterias);
+		return $CsvListaMaterias;
 	}
 
 	private function arrayCsv($miArreglo)
@@ -64,7 +64,7 @@ class GestorMateriasCSV
 		return $csvString;
 	}
 
-	public function obtenerMateriaCsv($claveMateria)
+	public function obtenerMateria($claveMateria)
 	{
 
 
@@ -81,7 +81,7 @@ class GestorMateriasCSV
 				return null;
 			} else {
 				$csvMateria = $this->arrayCsv([$materia]);
-				
+
 				return $csvMateria;
 			}
 
@@ -90,8 +90,12 @@ class GestorMateriasCSV
 		}
 	}
 
-	public function insertarMateriaCSV($materia)
+	public function insertarMateria($materia)
 	{
+		$lineas = explode("\n", trim($materia));
+		$cabeceras = str_getcsv($lineas[0]);
+		$valores = str_getcsv($lineas[1]);
+		$materia = array_combine($cabeceras, $valores);
 		// Insertar el nuevo artículo
 		$insert = $this->conexion->prepare('INSERT INTO Materias (claveMateria, nombre, semestre, horas, creditos) VALUES (:claveMateria, :nombre, :semestre, :horas, :creditos)');
 
@@ -110,8 +114,12 @@ class GestorMateriasCSV
 		}
 	}
 
-	public function actualizarMateriaCSV($materia)
+	public function actualizarMateria($materia)
 	{
+		$lineas = explode("\n", trim($materia));
+		$cabeceras = str_getcsv($lineas[0]);
+		$valores = str_getcsv($lineas[1]);
+		$materia = array_combine($cabeceras, $valores);
 		$actualizar = $this->conexion->prepare('UPDATE Materias SET claveMateria=:claveMateria, nombre=:nombre, semestre=:semestre, horas=:horas, creditos=:creditos WHERE claveMateria=:claveMateria');
 		$actualizar->bindValue('claveMateria', $materia['claveMateria']);
 		$actualizar->bindValue('nombre', $materia['nombre']);
@@ -122,6 +130,21 @@ class GestorMateriasCSV
 		try {
 			$actualizar->execute();
 			echo json_encode(["message" => "Materia actualizada"]);
+		} catch (Throwable $e) {
+			// Code to handle the exception or error
+			http_response_code(400);
+			echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
+		}
+	}
+
+	public function eliminarMateria($claveMateria)
+	{
+		$eliminar = $this->conexion->prepare('DELETE FROM Materias WHERE claveMateria=:claveMateria');
+		$eliminar->bindValue('claveMateria', $claveMateria);
+
+		try {
+			$eliminar->execute();
+			echo json_encode(["message" => "Materia eliminada"]);
 		} catch (Throwable $e) {
 			// Code to handle the exception or error
 			http_response_code(400);

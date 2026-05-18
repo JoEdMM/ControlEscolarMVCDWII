@@ -5,7 +5,7 @@ require_once BASE_PATH . "/src/model/unidades/Interfaces/I_EscrituraUnidades.php
 require_once BASE_PATH . "/src/model/unidades/entidades/Unidades.php";
 require_once BASE_PATH . "/src/config/conexion.php";
 
-class GestorUnidadesCSV
+class GestorUnidadesCSV implements I_LecturaUnidades, I_EscrituraUnidades
 {
 	private $conexion;
 
@@ -46,7 +46,7 @@ class GestorUnidadesCSV
 		return $csvString;
 	}
 
-	public function obtenerUnidadesporClaveNumCsv($claveMateria, $numUnidad)
+	public function obtenerUnidadesporClaveNum($claveMateria, $numUnidad)
 	{
 		$offset = (int) $numUnidad - 1;
 		if ($offset < 0)
@@ -73,13 +73,20 @@ class GestorUnidadesCSV
 
 	}
 
-	public function eliminarUnidad_Id_NumCsv($unidades)
+	public function eliminarUnidad_Id_Num($unidades)
 	{
+		$lineas = explode("\n", trim($unidades));
+
+		$cabeceras = str_getcsv($lineas[0]);
+
+		$valores = str_getcsv($lineas[1]);
+
+		$unidades = array_combine($cabeceras, $valores);
 		// $offset = (int) $unidades - 1;
 		// if ($offset < 0)
 		// 	$offset = 0;
 		$eliminar = $this->conexion->prepare('DELETE FROM Unidades WHERE id=:id ');
-		$eliminar->bindValue('id', $unidades);
+		$eliminar->bindValue('id', $unidades['id']);
 
 		try {
 			$eliminar->execute();
