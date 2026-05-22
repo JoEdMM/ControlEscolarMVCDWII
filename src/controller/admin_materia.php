@@ -1,6 +1,22 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/ControlEscolarMVCDWII/src/config/url.php";
 
+$apikey = '22390450&22390538';
+define('API_KEY', $apikey);
+$headers = apache_request_headers();
+
+$apiKeyCliente = isset($headers['X-API-KEY']) ? $headers['X-API-KEY'] : null;
+
+
+if ($apiKeyCliente !== API_KEY) {
+	header("Content-Type: application/json; charset=UTF-8");
+	http_response_code(401);
+	echo json_encode([
+		"status" => "error",
+		"message" => "Acceso denegado. API Key inválida o ausente en los Headers."
+	]);
+	exit;
+}
 //incluye la clase Libro y CrudLibro
 require_once(BASE_PATH . '/src/model/materias/entidades/Materias.php');
 require_once(BASE_PATH . '/src/model/unidades/entidades/Unidades.php');
@@ -116,7 +132,7 @@ switch ($method) {
 			$gestorUnidades->eliminarUnidad_Id_Num($unidad);
 			echo json_encode(["message" => "Unidad Eliminada"]);
 		} elseif (isset($_GET['claveMateria'])) {
-			
+
 			$gestorMaterias->eliminarMateria($_GET['claveMateria']);
 		}
 		break;
